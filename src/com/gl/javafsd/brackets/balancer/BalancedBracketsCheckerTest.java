@@ -1,78 +1,27 @@
 package com.gl.javafsd.brackets.balancer;
 
-import java.util.Set;
-import java.util.Stack;
+public class BalancedBracketsCheckerTest {
 
-public class BalancedBracketsChecker {
+    public static void main(String[] args) {
 
-    private String expression;
-    private Result result;
+        test("{[()]}");
+        test("{}");
+        test("[]");
+        test("[{}]");
+        test("[<>]");
+        test("[<<]");
+        test("({[<>]})");
+        test("[]");
+        test("[}");
+        test("[<>");
 
-    public BalancedBracketsChecker(String expression) {
-
-        this.expression = expression;
-        this.result = new Result(expression);
     }
 
-    public Result check() {
 
+    private static void test(String brackets) {
 
-        if (expression.length() %2 != 0) {
-
-            result.setErrorMessage("Number of character are NOT even");
-            result.setBalanced(false);
-            return result;
-        }
-
-        Stack<Character> stack = new Stack<Character>();
-
-        Set<Character> openBracketsSet
-                = BracketManager.getOpenBracketCharsSet();
-
-        Set<Character> closeBracketsSet
-                = BracketManager.getCloseBracketCharsSet();
-
-
-        for (int index = 0; index < expression.length(); index ++) {
-
-            char aChar = expression.charAt(index);
-
-            if (openBracketsSet.contains(aChar)) {
-
-                stack.push(aChar);
-
-            }else if (closeBracketsSet.contains(aChar)) {
-
-                Bracket bracketObj = BracketManager.getBracket(aChar);
-
-                Character openCharFromStack = stack.pop();
-
-                if (openCharFromStack.equals(bracketObj.getOpenChar())) {
-
-                    // Match
-                    continue;
-                }else {
-                    break;
-                }
-
-            }else{
-                System.out.println("Invalid character encountered "
-                        + "during traversal.." + aChar);
-                result.setBalanced(false);
-                break;
-
-            }
-        }
-
-        boolean empty = stack.isEmpty();
-
-        if (empty) {
-            result.setBalanced(true);
-        }else {
-            result.setBalanced(false);
-        }
-
-        return result;
+        BalancedBracketsChecker checker = new BalancedBracketsChecker(brackets);
+        Result result = checker.check();
+        System.out.println(result);
     }
-
 }
